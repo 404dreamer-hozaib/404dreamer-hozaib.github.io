@@ -1,1 +1,11 @@
-[]
+[
+  {
+    "date": "2026-10-05",
+    "title": "CSES: Weird Algorithm — Accepted!",
+    "category": "cp",
+    "xp": 10,
+    "text": "Solved today: Weird Algorithm (CSES Introductory Problems).\n\nProblem Breakdown:\nGiven a positive integer n, repeat the following until n = 1:\n- If n is even, divide it by 2.\n- If n is odd, multiply by 3 and add 1.\nPrint the entire sequence. \n\nApproach & Key Takeaway:\n- Simple while-loop simulation until n == 1.\n- Crucial detail: Even though n <= 10^6, intermediate values of (3n + 1) easily exceed a 32-bit integer. Used `long long` in C++ to prevent integer overflow.",
+    "code": "#include <bits/stdc++.h>\nusing namespace std;\n \nint main() {\n    ios_base::sync_with_stdio(false);\n    cin.tie(NULL);\n \n    long long n;\n    cin >> n;\n \n    while (n != 1) {\n        cout << n << \" \";\n        if (n % 2 == 0) {\n            n /= 2;\n        } else {\n            n = 3 * n + 1;\n        }\n    }\n \n    cout << 1 << \"\\n\";\n \n    return 0;\n}",
+    "codeLang": "cpp"
+  }
+]
