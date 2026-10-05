@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="404dreamer-hozaib's daily quest log — CP, Dev & Cybersecurity progress">
+  <link rel="icon" href="data:,">
+  <title>QUEST_LOG — 404dreamer-hozaib</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>QUEST_LOG<span class="cursor">▮</span></h1>
+      <p class="sub">404dreamer-hozaib · daily CP / DEV / SEC progress log</p>
+    </header>
+
+    <section class="terminal">
+      <div class="term-bar">
+        <span class="term-dot r"></span>
+        <span class="term-dot y"></span>
+        <span class="term-dot g"></span>
+        <span class="term-title">hozaib@questlog: ~/daily</span>
+      </div>
+      <div class="term-body" id="terminal"></div>
+    </section>
+
+    <section class="stats">
+      <div class="stat level">
+        <div class="stat-label">LEVEL <span id="lvl">1</span> · <span id="lvlTitle">Newbie</span></div>
+        <div class="xpbar"><div id="xpfill"></div></div>
+        <div class="stat-sub" id="xpText">0 / 100 XP → next level</div>
+      </div>
+      <div class="stat">
+        <div class="big" id="streak">0</div>
+        <div class="stat-label">🔥 streak</div>
+      </div>
+      <div class="stat">
+        <div class="big" id="totalXp">0</div>
+        <div class="stat-label">⚡ total XP</div>
+      </div>
+      <div class="stat">
+        <div class="big" id="totalPosts">0</div>
+        <div class="stat-label">🗂 log entries</div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2><span class="hicon">📊</span>Activity<span class="hrange">last 52 weeks</span></h2>
+      <div class="heat-scroll"><div id="heatmap"></div></div>
+      <div class="heat-stats" id="heatStats"></div>
+      <div class="legend">
+        less
+        <span class="dot" style="background:#161d28"></span>
+        <span class="dot cp"></span><small>CP</small>
+        <span class="dot dev"></span><small>DEV</small>
+        <span class="dot sec"></span><small>SEC</small>
+        more
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2><span class="hicon">📜</span>Log entries<span class="hrange" id="logRange">daily progress</span></h2>
+      <div class="filters" id="filters"></div>
+      <div id="posts"></div>
+    </section>
+
+    <footer>
+      © 2026 404dreamer-hozaib · plain HTML/JS, hosted free on GitHub Pages ·
+      <a href="https://github.com/404dreamer-hozaib" target="_blank" rel="noopener">github</a> ·
+      <a href="admin.html">add post</a>
+    </footer>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

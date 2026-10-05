@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="data:,">
+  <title>Admin — Quest Log</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #0a0e14; color: #c9d4e3; font-family: ui-monospace, Consolas, monospace; line-height: 1.6; }
+    .wrap { max-width: 760px; margin: 0 auto; padding: 32px 20px 60px; }
+    h1 { color: #22c55e; font-size: 22px; }
+    .hint { color: #5b6b80; font-size: 13px; }
+    label { display: block; font-size: 12px; color: #8fa3bb; margin: 14px 0 4px; text-transform: uppercase; letter-spacing: 1px; }
+    input, select, textarea {
+      width: 100%; background: #10151d; color: #e6edf5;
+      border: 1px solid #24303e; border-radius: 6px; padding: 8px 10px;
+      font-family: inherit; font-size: 14px;
+    }
+    textarea { min-height: 90px; resize: vertical; }
+    textarea.big { min-height: 180px; font-size: 12px; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .btn {
+      background: #22c55e22; color: #22c55e; border: 1px solid #22c55e66;
+      border-radius: 6px; padding: 9px 16px; font-family: inherit; font-size: 14px;
+      cursor: pointer; margin-top: 16px;
+    }
+    .btn.secondary { background: #161d28; color: #8fa3bb; border-color: #24303e; }
+    .box { background: #0d1219; border: 1px solid #1d2733; border-radius: 8px; padding: 18px; margin-bottom: 20px; }
+    ol.steps { color: #9db0c6; font-size: 13.5px; padding-left: 20px; }
+    ol.steps li { margin-bottom: 6px; }
+    .ok-msg { color: #22c55e; font-size: 13px; margin-top: 8px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>⚙ ADMIN — post generator</h1>
+    <p class="hint">Form fill koro → Generate → Copy → GitHub e posts.json e paste. Kono coding lagbe na.</p>
+
+    <div class="box">
+      <div class="row">
+        <div>
+          <label for="date">Date</label>
+          <input type="date" id="date">
+        </div>
+        <div>
+          <label for="category">Category</label>
+          <select id="category">
+            <option value="cp">CP (competitive programming)</option>
+            <option value="dev">DEV (development)</option>
+            <option value="sec">SEC (cybersecurity / CTF)</option>
+          </select>
+        </div>
+      </div>
+      <label for="title">Title</label>
+      <input type="text" id="title" placeholder="ajke ki korle? jemon: Binary Search practice">
+      <label for="xp">XP earned</label>
+      <select id="xp">
+        <option value="10">10 — easy</option>
+        <option value="25" selected>25 — medium</option>
+        <option value="50">50 — hard</option>
+        <option value="100">100 — CTF flag / boro achievement</option>
+      </select>
+      <label for="text">Ki korle + ki shikhle (detail likho)</label>
+      <textarea id="text" placeholder="Aj ki problem solve korlam, konta kothin chilo, kal ki korbo..."></textarea>
+    </div>
+
+    <div class="box">
+      <label for="existing">Existing posts.json (optional — purono post gulo ekhane thakle merge hobe)</label>
+      <textarea id="existing" class="big" placeholder="khali rakhle fresh file hobe (shudhu ei notun post thakbe)"></textarea>
+      <button type="button" class="btn secondary" onclick="loadLive()">⬇ Live site theke purono post load koro</button>
+    </div>
+
+    <button type="button" class="btn" onclick="generate()">⚡ Generate posts.json</button>
+    <div class="ok-msg" id="msg"></div>
+
+    <div class="box" style="margin-top:20px">
+      <label for="out">Output — ei pura file ta copy kore posts.json replace koro</label>
+      <textarea id="out" class="big" readonly></textarea>
+      <button type="button" class="btn" onclick="copyOut()">📋 Copy</button>
+    </div>
+
+    <div class="box">
+      <strong style="color:#e6edf5">Daily publish er steps:</strong>
+      <ol class="steps">
+        <li>Upore form fill kore <b>Generate</b> → <b>Copy</b> chapo</li>
+        <li>GitHub e jao → apnar repo (<b>404dreamer-hozaib.github.io</b>) → <b>posts.json</b> file e click</li>
+        <li>Daye diye pencil <b>✏ (Edit)</b> icon e click koro</li>
+        <li>Sob lekha select (Ctrl+A) kore delete → notun JSON paste koro</li>
+        <li>Niche <b>Commit changes</b> chapo → ~1 minute e site e live 🎉</li>
+      </ol>
+      <p class="hint">Tip: site deploy howar por ei admin page ta live o khola — https://404dreamer-hozaib.github.io/admin.html theke o use korte parbe, tokhon "Live theke load" button auto kaj korbe.</p>
+    </div>
+  </div>
+
+  <script>
+    function localToday() {
+      const d = new Date();
+      return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+    }
+    document.getElementById('date').value = localToday();
+
+    async function loadLive() {
+      const urls = ['posts.json?ts=' + Date.now(), 'https://404dreamer-hozaib.github.io/posts.json?ts=' + Date.now()];
+      for (const u of urls) {
+        try {
+          const r = await fetch(u);
+          if (!r.ok) continue;
+          const d = await r.json();
+          document.getElementById('existing').value = JSON.stringify(Array.isArray(d) ? d : d.posts, null, 2);
+          document.getElementById('msg').textContent = '✓ purono post load holo — ekhon Generate dile merge hoye jabe';
+          return;
+        } catch (e) { /* try next */ }
+      }
+      alert('Load kora jay nai — hote pari site ekhono live na. Kichhu problem na: existing box ta khali rakhle fresh file tobe.');
+    }
+
+    function generate() {
+      const date = document.getElementById('date').value;
+      const title = document.getElementById('title').value.trim();
+      const category = document.getElementById('category').value;
+      const xp = Number(document.getElementById('xp').value);
+      const text = document.getElementById('text').value.trim();
+      if (!date || !title || !text) {
+        alert('Date, Title ar Text — ei tinta lagbe!');
+        return;
+      }
+      let existing = [];
+      const raw = document.getElementById('existing').value.trim();
+      if (raw) {
+        try {
+          const d = JSON.parse(raw);
+          existing = Array.isArray(d) ? d : (d.posts || []);
+        } catch (e) {
+          alert('Existing JSON e bhul ache (comma/brekat check koro). Na hole existing khali rekhe fresh generate koro.');
+          return;
+        }
+      }
+      existing = existing.filter(p => p && p.date && p.title).map(p => ({
+        date: p.date, title: p.title, category: p.category || 'dev', xp: Number(p.xp) || 0, text: p.text || ''
+      }));
+      const all = [{ date, title, category, xp, text }, ...existing]
+        .sort((a, b) => String(b.date).localeCompare(String(a.date)));
+      document.getElementById('out').value = JSON.stringify(all, null, 2);
+      document.getElementById('msg').textContent = '✓ Generated! Ekhon Copy chapo ar GitHub e posts.json replace koro.';
+    }
+
+    async function copyOut() {
+      const t = document.getElementById('out');
+      if (!t.value) { alert('Age Generate chapo!'); return; }
+      try {
+        await navigator.clipboard.writeText(t.value);
+      } catch (e) {
+        t.select();
+        document.execCommand('copy');
+      }
+      document.getElementById('msg').textContent = '✓ Copied! Ekhon GitHub e posts.json → Edit → paste → Commit.';
+    }
+  </script>
+</body>
+</html>
