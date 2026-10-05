@@ -184,3 +184,31 @@ footer {
 }
 footer a { color: #5b6b80; }
 a { color: #22c55e; }
+
+/* ---------- top navigation ---------- */
+
+html { scroll-behavior: smooth; }
+.topnav {
+  position: sticky; top: 0; z-index: 20;
+  background: rgba(10, 14, 20, .82);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid #141c27;
+}
+.nav-inner { max-width: 900px; margin: 0 auto; padding: 12px 20px; display: flex; align-items: center; }
+.nav-brand { color: #22c55e; font-weight: 700; letter-spacing: 1.5px; font-size: 13px; }
+.nav-links { margin-left: auto; display: flex; gap: 20px; }
+.nav-links a { color: #8fa3bb; font-size: 12.5px; text-decoration: none; letter-spacing: 1px; transition: color .15s; }
+.nav-links a:hover { color: #22c55e; }
+section[id] { scroll-margin-top: 64px; }
+
+/* ---------- code block in posts ---------- */
+
+.codewrap { margin-top: 14px; border: 1px solid #1d2733; border-radius: 8px; overflow: hidden; background: #0a0f16; }
+.codehead { display: flex; align-items: center; padding: 7px 13px; background: #10161f; border-bottom: 1px solid #1d2733; }
+.clang { font-size: 10.5px; color: #6b7d93; letter-spacing: 1.5px; text-transform: uppercase; }
+.codeblock { margin: 0; padding: 13px 15px; overflow-x: auto; font-size: 12.5px; line-height: 1.55; color: #cde3f7; }
+
+/* ---------- post card polish ---------- */
+
+.card h3 { font-size: 17px; letter-spacing: .2px; }
+.card p { font-size: 14px; color: #a8b8cc; }

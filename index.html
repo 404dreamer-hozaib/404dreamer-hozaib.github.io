@@ -9,6 +9,16 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <nav class="topnav">
+    <div class="nav-inner">
+      <span class="nav-brand">QUEST_LOG</span>
+      <span class="nav-links">
+        <a href="#activity">activity</a>
+        <a href="#logs">logs</a>
+        <a href="https://github.com/404dreamer-hozaib" target="_blank" rel="noopener">github ↗</a>
+      </span>
+    </div>
+  </nav>
   <div class="wrap">
     <header>
       <h1>QUEST_LOG<span class="cursor">▮</span></h1>
@@ -45,7 +55,7 @@
       </div>
     </section>
 
-    <section class="panel">
+    <section class="panel" id="activity">
       <h2><span class="hicon">📊</span>Activity<span class="hrange">last 52 weeks</span></h2>
       <div class="heat-scroll"><div id="heatmap"></div></div>
       <div class="heat-stats" id="heatStats"></div>
@@ -59,16 +69,15 @@
       </div>
     </section>
 
-    <section class="panel">
+    <section class="panel" id="logs">
       <h2><span class="hicon">📜</span>Log entries<span class="hrange" id="logRange">daily progress</span></h2>
       <div class="filters" id="filters"></div>
       <div id="posts"></div>
     </section>
 
     <footer>
-      © 2026 404dreamer-hozaib · plain HTML/JS, hosted free on GitHub Pages ·
-      <a href="https://github.com/404dreamer-hozaib" target="_blank" rel="noopener">github</a> ·
-      <a href="admin.html">add post</a>
+      © 2026 404dreamer-hozaib ·
+      <a href="https://github.com/404dreamer-hozaib" target="_blank" rel="noopener">github</a>
     </footer>
   </div>
   <script src="app.js"></script>

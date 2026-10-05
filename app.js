@@ -126,7 +126,7 @@ function renderHeatmap() {
       .map(k => '<span class="hs"><i style="background:' + CATS[k].color + '"></i>' + CATS[k].label + ' ' + counts[k] + '</span>')
       .join('') + '<span class="hs total">' + inWindow.length + ' log / ' + WEEKS + ' weeks</span>';
   } else {
-    hs.innerHTML = '<span class="hs total">ekhono kono activity nai — prothom log dile box ta bhora shuru hobe 🌱</span>';
+    hs.innerHTML = '';
   }
 }
 
@@ -151,24 +151,32 @@ function renderPosts() {
   const elBox = document.getElementById('posts');
   const list = activeFilter === 'all' ? POSTS : POSTS.filter(p => p.category === activeFilter);
   if (!list.length) {
-    elBox.innerHTML =
-      '<p class="empty"><span class="big-emoji">🌱</span>' +
-      'Quest log ekhono khali — ekhane apnar daily progress jombe.<br>' +
-      'Prothom quest add korte <a href="admin.html">admin.html</a> khulo: form fill → Generate → Copy → GitHub e posts.json e paste.</p>';
+    elBox.innerHTML = '';
     return;
   }
   elBox.innerHTML = list.map(p => {
     const c = CATS[p.category] || CATS.dev;
+    const codeBlock = p.code
+      ? '<div class="codewrap"><div class="codehead"><span class="clang">' + esc(p.codeLang || 'code') + '</span></div>' +
+        '<pre class="codeblock">' + esc(p.code) + '</pre></div>'
+      : '';
     return '<article class="card" style="--cat:' + c.color + '">' +
       '<div class="card-head">' +
         '<span class="chip" style="background:' + c.color + '22;color:' + c.color + ';border:1px solid ' + c.color + '55">' + c.label + '</span>' +
-        '<span class="pdate">' + esc(p.date) + '</span>' +
+        '<span class="pdate">' + esc(fmtDate(p.date)) + '</span>' +
         '<span class="pxp">+' + (Number(p.xp) || 0) + ' XP</span>' +
       '</div>' +
       '<h3>' + esc(p.title) + '</h3>' +
       '<p>' + esc(p.text || '') + '</p>' +
+      codeBlock +
     '</article>';
   }).join('');
+}
+
+function fmtDate(s) {
+  const d = new Date(String(s) + 'T00:00:00');
+  if (isNaN(d)) return String(s);
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
 
 /* ---------- terminal intro ---------- */
@@ -207,7 +215,7 @@ async function typeTerminal() {
   POSTS = await loadPosts();
   if (POSTS === null) {
     document.getElementById('posts').innerHTML =
-      '<p class="empty">⚠ posts.json load kora jay nai. Site ta GitHub Pages e upload korlei thik hoye jabe.</p>';
+      '<p class="empty">Failed to load posts.json — make sure the file is uploaded next to index.html.</p>';
     return;
   }
   POSTS.sort((a, b) => String(b.date).localeCompare(String(a.date)));
