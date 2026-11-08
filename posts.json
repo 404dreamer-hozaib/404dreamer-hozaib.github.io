@@ -1,5 +1,14 @@
 [
   {
+    "date": "2026-11-08",
+    "title": "0/1 Knapsack — Recursive DP with Memoization",
+    "category": "cp",
+    "xp": 50,
+    "text": "What I Did\n\nSolved the classic 0/1 Knapsack problem using recursion and memoization in C++.\n\nWhat I Learned\n\n- Understood the two choices: Take an item or Skip it.\n- Implemented recursive state transitions.\n- Used a 2D DP array to store previously calculated states.\n- Applied memoization to avoid repeated calculations.\n- Learned how to maximize total value within a limited weight capacity.\n\nApproach\n\nFor each item, I considered two possibilities:\n\n1. Skip the current item.\n2. Take the current item if its weight fits.\n\nFinally, I selected the maximum value between these two choices and stored the result in the DP table.\n\nComplexity\n\nTime: O(n × W)\nSpace: O(n × W)\n\nQuest Reflection\n\nLearned how overlapping subproblems can be optimized using memoization. Another step forward in mastering Dynamic Programming.\n\nStatus: Completed",
+    "code": "#include <bits/stdc++.h>\nusing namespace std;\n\nint wt[200], val[200];\nint dp[200][200];\n\nint knapsack(int i, int wt_left) {\n    if (wt_left == 0 || i < 0)\n        return 0;\n\n    if (dp[i][wt_left] != -1)\n        return dp[i][wt_left];\n\n    int ans = knapsack(i - 1, wt_left);\n\n    if (wt_left - wt[i] >= 0) {\n        ans = max(ans,\n            knapsack(i - 1, wt_left - wt[i]) + val[i]);\n    }\n\n    return dp[i][wt_left] = ans;\n}\n\nint main() {\n    memset(dp, -1, sizeof(dp));\n\n    int n, w;\n    cin >> n >> w;\n\n    for (int i = 0; i < n; i++) {\n        cin >> wt[i] >> val[i];\n    }\n\n    cout << knapsack(n - 1, w);\n\n    return 0;\n}",
+    "codeLang": "cpp"
+  },
+  {
     "date": "2026-11-07",
     "title": "Longest Common Subsequence (LCS) Using Dynamic Programming",
     "category": "cp",
