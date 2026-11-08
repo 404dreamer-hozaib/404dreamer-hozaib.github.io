@@ -1,6 +1,15 @@
 [
   {
     "date": "2026-11-08",
+    "title": "Matrix Chain Multiplication — DP with Memoization & Optimal Parenthesization",
+    "category": "cp",
+    "xp": 50,
+    "text": "What I Did\n\nSolved the Matrix Chain Multiplication (MCM) problem using recursion and memoization in C++. Also implemented a function to print the optimal parenthesization of matrices.\n\nWhat I Learned\n\n- Understood the Matrix Chain Multiplication problem.\n- Learned how matrix multiplication order affects the total number of operations.\n- Applied recursive divide-and-conquer to find the minimum multiplication cost.\n- Used 2D DP and memoization to avoid repeated calculations.\n- Learned how to reconstruct and print the optimal multiplication order.\n\nApproach\n\n1. If i == j, return 0 because a single matrix requires no multiplication.\n2. Try every possible partition point k between i and j.\n3. Calculate the cost of left and right subproblems.\n4. Add the cost of multiplying the resulting matrices.\n5. Store the minimum cost in dp[i][j].\n6. Reconstruct the optimal parenthesization using printmcm().\n\nComplexity\n\nTime: O(n³)\nSpace: O(n²)\n\nQuest Reflection\n\nLearned how Dynamic Programming can optimize matrix multiplication by finding the minimum number of scalar multiplications. Also practiced reconstructing the optimal solution, not just calculating its cost.\n\nStatus: Completed",
+    "code": "#include <bits/stdc++.h>\nusing namespace std;\n\nint n;\nint p[1000];\nint dp[1000][1000];\n\nint mcm(int i, int j) {\n    if (i == j) return 0;\n\n    if (dp[i][j] != -1)\n        return dp[i][j];\n\n    int mincost = INT_MAX;\n\n    for (int k = i; k < j; k++) {\n        mincost = min(mincost,\n            mcm(i, k) +\n            mcm(k + 1, j) +\n            p[i - 1] * p[k] * p[j]);\n    }\n\n    return dp[i][j] = mincost;\n}\n\nvoid printmcm(int i, int j) {\n    if (i == j) {\n        cout << \"A\" << i;\n        return;\n    }\n\n    for (int k = i; k < j; k++) {\n        int cost = mcm(i, k) +\n                   mcm(k + 1, j) +\n                   p[i - 1] * p[k] * p[j];\n\n        if (dp[i][j] == cost) {\n            cout << \"(\";\n            printmcm(i, k);\n            cout << \"x\";\n            printmcm(k + 1, j);\n            cout << \")\";\n            return;\n        }\n    }\n}\n\nint main() {\n    cin >> n;\n\n    memset(dp, -1, sizeof(dp));\n\n    for (int i = 0; i <= n; i++) {\n        cin >> p[i];\n    }\n\n    int cost = mcm(1, n);\n\n    cout << cost << endl;\n    printmcm(1, n);\n\n    return 0;\n}",
+    "codeLang": "cpp"
+  },
+  {
+    "date": "2026-11-08",
     "title": "0/1 Knapsack — Recursive DP with Memoization",
     "category": "cp",
     "xp": 50,
