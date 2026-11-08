@@ -147,6 +147,46 @@ function renderFilters() {
   document.getElementById('logRange').textContent = 'total ' + POSTS.length + ' · daily progress';
 }
 
+function renderPostCard(p, index) {
+  const c = CATS[p.category] || CATS.dev;
+  const bodyId = 'post-body-' + index;
+  const toggleId = 'post-toggle-' + index;
+  const codeBlock = p.code
+    ? '<div class="codewrap"><div class="codehead"><span class="clang">' + esc(p.codeLang || 'code') + '</span></div>' +
+      '<pre class="codeblock">' + esc(p.code) + '</pre></div>'
+    : '';
+
+  return '<article class="card" style="--cat:' + c.color + '">' +
+    '<button class="card-toggle" id="' + toggleId + '" type="button" aria-expanded="false" aria-controls="' + bodyId + '">' +
+      '<span class="card-head">' +
+        '<span class="chip" style="background:' + c.color + '22;color:' + c.color + ';border:1px solid ' + c.color + '55">' + c.label + '</span>' +
+        '<span class="pdate">' + esc(fmtDate(p.date)) + '</span>' +
+        '<span class="pxp">+' + (Number(p.xp) || 0) + ' XP</span>' +
+      '</span>' +
+      '<span class="card-title-row"><h3>' + esc(p.title) + '</h3><span class="toggle-icon" aria-hidden="true">⌄</span></span>' +
+    '</button>' +
+    '<div class="card-body" id="' + bodyId + '" role="region" aria-labelledby="' + toggleId + '" hidden>' +
+      '<p>' + esc(p.text || '') + '</p>' +
+      codeBlock +
+    '</div>' +
+  '</article>';
+}
+
+function togglePost(button) {
+  const card = button.closest('.card');
+  const body = card.querySelector('.card-body');
+  const willOpen = button.getAttribute('aria-expanded') !== 'true';
+  button.setAttribute('aria-expanded', String(willOpen));
+  body.hidden = !willOpen;
+  card.classList.toggle('open', willOpen);
+}
+
+function bindPostToggles(container) {
+  container.querySelectorAll('.card-toggle').forEach(button => {
+    button.addEventListener('click', () => togglePost(button));
+  });
+}
+
 function renderPosts() {
   const elBox = document.getElementById('posts');
   const list = activeFilter === 'all' ? POSTS : POSTS.filter(p => p.category === activeFilter);
@@ -154,23 +194,8 @@ function renderPosts() {
     elBox.innerHTML = '';
     return;
   }
-  elBox.innerHTML = list.map(p => {
-    const c = CATS[p.category] || CATS.dev;
-    const codeBlock = p.code
-      ? '<div class="codewrap"><div class="codehead"><span class="clang">' + esc(p.codeLang || 'code') + '</span></div>' +
-        '<pre class="codeblock">' + esc(p.code) + '</pre></div>'
-      : '';
-    return '<article class="card" style="--cat:' + c.color + '">' +
-      '<div class="card-head">' +
-        '<span class="chip" style="background:' + c.color + '22;color:' + c.color + ';border:1px solid ' + c.color + '55">' + c.label + '</span>' +
-        '<span class="pdate">' + esc(fmtDate(p.date)) + '</span>' +
-        '<span class="pxp">+' + (Number(p.xp) || 0) + ' XP</span>' +
-      '</div>' +
-      '<h3>' + esc(p.title) + '</h3>' +
-      '<p>' + esc(p.text || '') + '</p>' +
-      codeBlock +
-    '</article>';
-  }).join('');
+  elBox.innerHTML = list.map(renderPostCard).join('');
+  bindPostToggles(elBox);
 }
 
 function fmtDate(s) {
