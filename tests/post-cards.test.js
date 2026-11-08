@@ -68,6 +68,8 @@ test('renders every post collapsed with escaped content and accessible controls'
   assert.match(html, /aria-expanded="false"/);
   assert.match(html, /aria-controls="post-body-0"/);
   assert.match(html, /id="post-body-0"[^>]*hidden/);
+  assert.match(html, /<span class="card-title">&lt;b&gt;LCS&lt;\/b&gt;<\/span>/);
+  assert.doesNotMatch(html, /<h3>/);
   assert.match(html, /&lt;b&gt;LCS&lt;\/b&gt;/);
   assert.match(html, /&lt;script&gt;alert\(1\)&lt;\/script&gt;/);
   assert.match(html, /cout &lt;&lt; &quot;&lt;ok&gt;&quot;;/);

@@ -163,7 +163,7 @@ function renderPostCard(p, index) {
         '<span class="pdate">' + esc(fmtDate(p.date)) + '</span>' +
         '<span class="pxp">+' + (Number(p.xp) || 0) + ' XP</span>' +
       '</span>' +
-      '<span class="card-title-row"><h3>' + esc(p.title) + '</h3><span class="toggle-icon" aria-hidden="true">⌄</span></span>' +
+      '<span class="card-title-row"><span class="card-title">' + esc(p.title) + '</span><span class="toggle-icon" aria-hidden="true">⌄</span></span>' +
     '</button>' +
     '<div class="card-body" id="' + bodyId + '" role="region" aria-labelledby="' + toggleId + '" hidden>' +
       '<p>' + esc(p.text || '') + '</p>' +
